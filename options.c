@@ -17,7 +17,7 @@ static void show_help(const char* program_name) {
 
 static struct fuse_args fuse_args;
 static zipfs_options_t options;
-const zipfs_options_t zipfs_options_init(int argc, char** argv) {
+zipfs_options_t zipfs_options_init(int argc, char** argv) {
    fuse_args.argc = argc;
    fuse_args.argv = argv;
    fuse_args.allocated = 0;

@@ -11,7 +11,7 @@ typedef struct zipfs_options {
 #define zipfs_option(str, field) \
     { str, offsetof(struct zipfs_options, field), 1 }
 
-const zipfs_options_t zipfs_options_init(int argc, char** argv);
+zipfs_options_t zipfs_options_init(int argc, char** argv);
 void zipfs_options_help();
 void zipfs_options_cleanup();
 
