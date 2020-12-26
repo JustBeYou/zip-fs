@@ -14,3 +14,6 @@ cmake -DCMAKE_BUILD_TYPE=Debug ..
 # Actually building
 make
 ```
+
+## Testing
+Please use `valgrind` to check for memory leaks.
