@@ -17,7 +17,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 # Targets
-add_executable(zip-fs main.c options.c)
+add_executable(zip-fs main.c
+        options.c)
 
 # FUSE
 pkg_search_module(FUSE REQUIRED fuse3>=3.0.0)

@@ -6,9 +6,9 @@
 #include "options.h"
 
 static const struct fuse_opt options_spec[] = {
-        zipfs_option("-h", show_help),
-        zipfs_option("--help", show_help),
-        FUSE_OPT_END
+    zipfs_option_spec("-h", show_help),
+    zipfs_option_spec("--help", show_help),
+    FUSE_OPT_END
 };
 
 static void show_help(const char* program_name) {
@@ -17,14 +17,19 @@ static void show_help(const char* program_name) {
 
 static struct fuse_args fuse_args;
 static zipfs_options_t options;
-zipfs_options_t zipfs_options_init(int argc, char** argv) {
-   fuse_args.argc = argc;
-   fuse_args.argv = argv;
-   fuse_args.allocated = 0;
+const zipfs_options_t* zipfs_options_init(int argc, char** argv) {
+    assert(argc > 0 && argv != NULL);
+    fuse_args.argc = argc;
+    fuse_args.argv = argv;
+    fuse_args.allocated = 0;
 
-   assert(fuse_opt_parse(&fuse_args, &options, options_spec, NULL) != -1);
+    assert(fuse_opt_parse(&fuse_args, &options, options_spec, NULL) != -1);
 
-   return options;
+    return &options;
+}
+
+const zipfs_options_t* zipfs_options_get() {
+    return &options;
 }
 
 void zipfs_options_help() {
