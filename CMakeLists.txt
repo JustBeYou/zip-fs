@@ -18,7 +18,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 # Targets
 file(GLOB operations_src "operations/*.c")
-add_executable(zip-fs main.c options.c zip_utils.c ${operations_src})
+add_executable(zip-fs main.c options.c zip_utils.c manager.c ${operations_src})
 
 # FUSE
 pkg_search_module(FUSE REQUIRED fuse3>=3.0.0)

@@ -39,4 +39,4 @@ int zip_is_dir(const char* dir_name, zip_t* zip) {
 
     zip_dir_path_cleanup(proper_dir_name);
     return ret;
-} 
+}

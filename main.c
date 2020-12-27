@@ -8,6 +8,9 @@ static struct fuse_operations fuse_operations = {
     .init = zipfs_init,
     .destroy = zipfs_destroy,
     .getattr = zipfs_getattr,
+    .open = zipfs_open,
+    .release = zipfs_release,
+    .read = zipfs_read,
 };
 
 int main(int argc, char *argv[])
