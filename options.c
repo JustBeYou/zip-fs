@@ -2,10 +2,16 @@
 #include <fuse3/fuse.h>
 #include <stdio.h>
 #include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+#include <linux/limits.h>
 
 #include "options.h"
 
+#define DEFAULT_ZIP_NAME "archive.zip"
+
 static const struct fuse_opt options_spec[] = {
+    zipfs_option_spec("--zip=%s", zip_filename),
     zipfs_option_spec("-h", show_help),
     zipfs_option_spec("--help", show_help),
     FUSE_OPT_END
@@ -23,7 +29,20 @@ const zipfs_options_t* zipfs_options_init(int argc, char** argv) {
     fuse_args.argv = argv;
     fuse_args.allocated = 0;
 
+    options.zip_filename = strdup(DEFAULT_ZIP_NAME);
+
     assert(fuse_opt_parse(&fuse_args, &options, options_spec, NULL) != -1);
+    if (options.zip_filename == NULL) {
+        zipfs_options_help();
+        exit(1);
+    }
+
+    // Get absolute file path
+    char abs_filename[PATH_MAX + 1];
+    realpath(options.zip_filename, abs_filename);
+    free(options.zip_filename);
+    // This field will be freed by fuse
+    options.zip_filename = strdup(abs_filename);
 
     return &options;
 }

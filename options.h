@@ -5,6 +5,7 @@
 #include <stddef.h>
 
 typedef struct zipfs_options {
+    char* zip_filename;
     bool show_help;
 } zipfs_options_t ;
 
