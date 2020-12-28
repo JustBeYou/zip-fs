@@ -1,6 +1,7 @@
 #include "manager.h"
 #include "zip_utils.h"
 #include "zipfs.h"
+#include "debug.h"
 #include <zip.h>
 
 static zip_file_t* opened_files[MAX_FD] = {NULL};
@@ -26,6 +27,8 @@ zip_file_t* zipfs_manager_get_by_fd(int fd) {
 }
 
 void zipfs_manager_close(int fd) {
+    debug(printf("[DEBUG] Free fd %d %p\n", fd, opened_files[fd]));
+
     if (fd >= 0 && fd < MAX_FD && opened_files[fd] != NULL) {
         zip_fclose(opened_files[fd]);
         opened_files[fd] = NULL;

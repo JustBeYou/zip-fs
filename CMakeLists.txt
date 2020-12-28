@@ -6,7 +6,7 @@ include(FindPkgConfig)
 
 # Custom flags
 set(C_FLAGS "-Wall -D_GNU_SOURCE")
-set(C_FLAGS_DEBUG "${C_FLAGS} -g -DDEBUG")
+set(C_FLAGS_DEBUG "${C_FLAGS} -g -DDEBUG -fsanitize=address")
 
 # Cmake flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_FLAGS}")

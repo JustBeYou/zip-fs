@@ -11,6 +11,9 @@ static struct fuse_operations fuse_operations = {
     .open = zipfs_open,
     .release = zipfs_release,
     .read = zipfs_read,
+    .readdir = zipfs_readdir,
+    .opendir = zipfs_opendir,
+    .releasedir = zipfs_releasedir,
 };
 
 int main(int argc, char *argv[])
