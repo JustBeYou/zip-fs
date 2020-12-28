@@ -9,14 +9,14 @@
 #include "../debug.h"
 
 int zipfs_create(const char *path, mode_t mode, struct fuse_file_info *fi) {
-    debug(printf("[DEBUG] create: %s %u\n", path, mode));
+    debug(printf(DEBUG_MSG "create: %s %u\n", path, mode));
 
     struct stat stbuf;
     if(!zipfs_getattr(path, &stbuf, fi)) {
         return -EEXIST;
     }
 
-    debug(printf("[DEBUG] create: not exists, ok\n"));
+    debug(printf(DEBUG_MSG "create: not exists, ok\n"));
 
     zipfs_data_t* data = zipfs_get_data();
     const char buf[] = {0};

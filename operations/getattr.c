@@ -20,7 +20,7 @@ int zipfs_getattr(const char *path, struct stat *stbuf, struct fuse_file_info *f
         zip_stat_t result;
         zip_stat_init(&result);
         
-        debug(printf("[DEBUG] getattr: check if file %s %p %p\n", real_path, data->zip_file, &result));
+        debug(printf(DEBUG_MSG "getattr: check if file %s %p %p\n", real_path, data->zip_file, &result));
         int ret = zip_stat(data->zip_file, real_path, 0, &result);
         if (ret != ZIP_ER_OK || result.name == NULL) return -ENOENT;
 

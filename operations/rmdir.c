@@ -16,7 +16,7 @@ int zipfs_rmdir(const char *path) {
         return -EEXIST;
     }
 
-    debug(printf("[DEBUG] rmdir: not exists, ok\n"));
+    debug(printf(DEBUG_MSG "rmdir: not exists, ok\n"));
 
     zipfs_data_t* data = zipfs_get_data();
     char* proper_path = zip_dir_path_format(path);
@@ -25,7 +25,7 @@ int zipfs_rmdir(const char *path) {
     zip_dir_path_cleanup(proper_path);
 
     if(zip_delete(data->zip_file, index)) {
-        debug(printf("[DEBUG] rmdir: error %s\n", zip_strerror(data->zip_file)));
+        debug(printf(DEBUG_MSG "rmdir: error %s\n", zip_strerror(data->zip_file)));
         return -EACCES;
     }
     zipfs_manager_flush(&(data->zip_file));

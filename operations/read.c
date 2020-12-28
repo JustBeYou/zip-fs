@@ -7,7 +7,7 @@
 #include <fcntl.h>
 
 int zipfs_read(const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info *fi) {
-    debug(printf("[DEBUG] read: %s %zu %zu %zu\n", path, fi->fh, size, offset));
+    debug(printf(DEBUG_MSG "read: %s %zu %zu %zu\n", path, fi->fh, size, offset));
 
     zip_file_t* file = zipfs_manager_get_by_fd(fi->fh);
     if (file == NULL) return -ENOENT;

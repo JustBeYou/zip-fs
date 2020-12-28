@@ -22,7 +22,7 @@ int zipfs_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
     zipfs_data_t* data = zipfs_get_data();
     zip_uint64_t entries = zip_get_num_entries(data->zip_file, 0);
 
-    debug(printf("[DEBUG] readdir: %s %s (root? %d)\n", path, real_path, is_root));
+    debug(printf(DEBUG_MSG "readdir: %s %s (root? %d)\n", path, real_path, is_root));
 
     // There is no directory structure in zlib, so we need to iterate
     // over all file entries and choose only direct children of the read directory
@@ -40,19 +40,19 @@ int zipfs_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 
     for (zip_uint64_t i = 0; i < entries; ++i) {
         const char* filename = zip_get_name(data->zip_file, i, 0);
-        debug(printf("[DEBUG] readdir: compare %s - %s\n", real_path, filename));
+        debug(printf(DEBUG_MSG "readdir: compare %s - %s\n", real_path, filename));
 
         if (is_root || strncmp(real_path, filename, real_path_len) == 0) {
             // should not be itself
             if (!is_root && filename[real_path_len] == '\0') continue;
-            debug(printf("[DEBUG] readdir: not self\n"));
+            debug(printf(DEBUG_MSG "readdir: not self\n"));
 
             const char* next_slash = strchr(filename + real_path_len, '/');
-            debug(printf("[DEBUG] readdir: next slash = %s\n", next_slash));
+            debug(printf(DEBUG_MSG "readdir: next slash = %s\n", next_slash));
 
             // should print only direct children
             if (next_slash != NULL && *(next_slash + 1) != '\0') continue;
-            debug(printf("[DEBUG] readdir: found entry in dir %s\n", filename + real_path_len));
+            debug(printf(DEBUG_MSG "readdir: found entry in dir %s\n", filename + real_path_len));
 
             // remove the last '/' from filename
             const char* filename_to_print = filename + real_path_len;

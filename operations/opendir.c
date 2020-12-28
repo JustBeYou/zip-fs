@@ -15,7 +15,7 @@ int zipfs_opendir(const char* path, struct fuse_file_info* fi) {
 
     // Check if file
     int ret = zip_stat(data->zip_file, real_path, 0, &result);
-    debug(printf("[DEBUG] opendir stat: %d %p\n", ret, result.name));
+    debug(printf(DEBUG_MSG "opendir stat: %d %p\n", ret, result.name));
     if (ret == ZIP_ER_OK && result.name != NULL) return -ENOTDIR;
     
     // Check if exists
