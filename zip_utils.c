@@ -21,6 +21,8 @@ void zip_dir_path_cleanup(char* path) {
 }
 
 int zip_is_dir(const char* dir_name, zip_t* zip) {
+    // Add a '/' to the end of the filename
+    // All directories in zip files terminate with this char
     char* proper_dir_name = zip_dir_path_format(dir_name);
 
     zip_stat_t result;
