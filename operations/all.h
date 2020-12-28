@@ -30,5 +30,6 @@ int zipfs_create(const char *path, mode_t mode, struct fuse_file_info *fi);
 int zipfs_unlink(const char *path);
 
 int zipfs_mkdir(const char *path , mode_t mode);
+int zipfs_rmdir(const char *path);
 
 #endif

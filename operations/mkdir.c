@@ -3,6 +3,7 @@
 #include "../zip_utils.h"
 #include "../debug.h"
 #include <errno.h>
+#include <string.h>
 
 int zipfs_mkdir(const char *path , mode_t mode) {
     struct stat stbuf;
