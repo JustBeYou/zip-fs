@@ -1,5 +1,6 @@
 #include "zip_utils.h"
 #include "debug.h"
+#include "options.h"
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -43,4 +44,17 @@ int zip_is_dir(const char* dir_name, zip_t* zip) {
 
     zip_dir_path_cleanup(proper_dir_name);
     return ret;
+}
+
+// TODO: is this even legit?
+void zip_flush(zip_t** zip_ptr) {
+    zip_close(*zip_ptr);
+    
+    int error = 0;
+    *zip_ptr = zip_open(zipfs_options_get()->zip_filename, 0, &error);
+    if (error != ZIP_ER_OK || *zip_ptr == NULL)
+    {
+        debug(printf("[DEBUG] Failed to flush zip. (%d %p)\n", error, *zip_ptr));
+        exit(1);
+    }
 }

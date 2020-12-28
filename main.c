@@ -14,12 +14,14 @@ static struct fuse_operations fuse_operations = {
     .readdir = zipfs_readdir,
     .opendir = zipfs_opendir,
     .releasedir = zipfs_releasedir,
+    .create = zipfs_create,
 };
 
 int main(int argc, char *argv[])
 {
-    const zipfs_options_t* options = zipfs_options_init(argc, argv);
-    if (options->show_help) {
+    const zipfs_options_t *options = zipfs_options_init(argc, argv);
+    if (options->show_help)
+    {
         zipfs_options_help();
     }
 

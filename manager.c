@@ -12,7 +12,10 @@ int zipfs_manager_open(const char* path) {
     for (int i = 0; i < MAX_FD; ++i) {
         if (opened_files[i] == NULL) {
             opened_files[i] = zip_fopen(zipfs_get_data()->zip_file, proper_path, 0);
-            if (opened_files[i] == NULL) return NOT_FOUND;
+            if (opened_files[i] == NULL) {
+                debug(printf("[DEBUG] manager open error: %s\n", zip_strerror(zipfs_get_data()->zip_file)));
+                return NOT_FOUND;
+            }
 
             return i;
         }
