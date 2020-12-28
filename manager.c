@@ -7,11 +7,26 @@
 #include <stdlib.h>
 #include <zip.h>
 #include <assert.h>
+#include <stdbool.h>
 
 static zip_file_t* opened_files[MAX_FD] = {NULL};
 static char* names[MAX_FD] = {NULL};
+static bool for_writing[MAX_FD] = {false};
 
-static int open_at_fd(const char* path, int fd) {
+// libzip does not allow intermitent writes and flushes
+// so we need to do some kind of buffering when writing files
+typedef struct write_buffer {
+    char* memory;
+    size_t size;
+    FILE* file;
+} write_buffer_t;
+static write_buffer_t writing_buffers[MAX_FD];
+
+// BUG: at the moment there is no way for using O_APPEND or writing multiple times
+// to the same file
+// TODO: the buffering mechanism described above must be implemented
+
+static int open_at_fd(const char* path, int fd, bool writing) {
     debug(assert(opened_files[fd] == NULL && names[fd] == NULL));
 
     const char* proper_path = zip_path_format(path);
@@ -21,14 +36,16 @@ static int open_at_fd(const char* path, int fd) {
         return NOT_FOUND;
     }
     names[fd] = strdup(path);
+    for_writing[fd] = writing;
+    // TODO: initialize writing buffers if it is the case
 
     return fd;
 }
 
-int zipfs_manager_open(const char* path) {
+int zipfs_manager_open(const char* path, bool writing) {
     for (int i = 0; i < MAX_FD; ++i) {
         if (opened_files[i] == NULL) {
-            return open_at_fd(path, i);
+            return open_at_fd(path, i, writing);
         }
     }
 
@@ -53,6 +70,8 @@ void zipfs_manager_close(int fd) {
         opened_files[fd] = NULL;
         free(names[fd]);
         names[fd] = NULL;
+        for_writing[fd] = false;
+        // TODO: cleanup writing buffers (don't forget to flush)
     }
 }
 
@@ -64,14 +83,20 @@ void zipfs_manager_close(int fd) {
 void zipfs_manager_flush(zip_t** zip_ptr) {
     char* temp_names[MAX_FD] = {NULL};
     zip_int64_t offsets[MAX_FD] = {0};
+    bool temp_for_writing[MAX_FD] = {false};
 
-    // save filenames, offsets and close
+    // save filenames, offsets, writing status and close
     for(int i = 0; i < MAX_FD; ++i) {
         if(names[i] != NULL) {
             temp_names[i] = strdup(names[i]);
-            offsets[i] = zip_ftell(opened_files[i]);
-            //debug(assert(offsets[i] >= 0));
-            if (offsets[i] < 0) offsets[i] = 0;
+            temp_for_writing[i] = for_writing[i];
+
+            // ftell only applied for files opened for reading
+            if (for_writing[i]) offsets[i] = zip_ftell(opened_files[i]);
+            else                offsets[i] = 0;
+            // TODO: save data in writing buffers
+
+            debug(assert(offsets[i] >= 0));
     
             debug(printf(DEBUG_MSG "Save state of %s (off %zu)\n", names[i], offsets[i]));
 
@@ -92,7 +117,8 @@ void zipfs_manager_flush(zip_t** zip_ptr) {
     // restore state
     for(int i = 0; i < MAX_FD; ++i) {
         if(temp_names[i] != NULL) {
-            open_at_fd(temp_names[i], i);
+            // TODO: be sure that writing buffers are reloaded
+            open_at_fd(temp_names[i], i, temp_for_writing[i]);
             zip_fseek(opened_files[i], offsets[i], 0);
             free(temp_names[i]);
         }

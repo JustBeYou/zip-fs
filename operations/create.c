@@ -11,6 +11,11 @@
 int zipfs_create(const char *path, mode_t mode, struct fuse_file_info *fi) {
     debug(printf(DEBUG_MSG "create: %s %u\n", path, mode));
 
+    // This filesystem does not support R/W flag
+    if (fi->flags & O_RDWR) return -EINVAL;
+
+    // TODO: check of O_APPEND and initialize writing buffers
+
     struct stat stbuf;
     if(!zipfs_getattr(path, &stbuf, fi)) {
         return -EEXIST;

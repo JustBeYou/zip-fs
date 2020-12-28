@@ -16,6 +16,8 @@ int zipfs_write(const char *path, const char *buf, size_t size, off_t offset, st
     zipfs_data_t* data = zipfs_get_data();
     zip_int64_t index = zip_name_locate(data->zip_file, zip_path_format(path), 0);
 
+    // TODO: use the associated writing buffer to store data
+    // TODO: make use of "offset"
     zip_source_t* s = zip_source_buffer(data->zip_file, buf, size, 0);
     debug(assert(s != NULL));
 
