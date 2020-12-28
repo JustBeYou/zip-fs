@@ -18,6 +18,7 @@ static struct fuse_operations fuse_operations = {
     .unlink = zipfs_unlink,
     .mkdir = zipfs_mkdir,
     .rmdir = zipfs_rmdir,
+    .write = zipfs_write,
 };
 
 int main(int argc, char *argv[])

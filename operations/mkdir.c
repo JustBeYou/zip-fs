@@ -16,6 +16,6 @@ int zipfs_mkdir(const char *path , mode_t mode) {
     if(zip_dir_add(data->zip_file, zip_path_format(path), 0) < 0) {
         return -EACCES;
     }
-    zip_flush(&(data->zip_file));
+    zipfs_manager_flush(&(data->zip_file));
     return 0;
 }

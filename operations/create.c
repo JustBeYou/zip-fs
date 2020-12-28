@@ -28,7 +28,9 @@ int zipfs_create(const char *path, mode_t mode, struct fuse_file_info *fi) {
         return -EACCES;
     }
 
-    zip_flush(&(data->zip_file));
+    zipfs_manager_flush(&(data->zip_file));
+
+    zipfs_open(path, fi);
 
     return 0;
 }

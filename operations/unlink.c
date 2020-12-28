@@ -17,7 +17,7 @@ int zipfs_unlink(const char* path) {
     if(zip_delete(data->zip_file, zip_name_locate(data->zip_file, zip_path_format(path), 0))) {
         return -EACCES;
     }
-    zip_flush(&(data->zip_file));
+    zipfs_manager_flush(&(data->zip_file));
     return 0;
 }
 

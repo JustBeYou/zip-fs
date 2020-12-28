@@ -28,6 +28,6 @@ int zipfs_rmdir(const char *path) {
         debug(printf("[DEBUG] rmdir: error %s\n", zip_strerror(data->zip_file)));
         return -EACCES;
     }
-    zip_flush(&(data->zip_file));
+    zipfs_manager_flush(&(data->zip_file));
     return 0;
 }
