@@ -13,14 +13,15 @@
 
 int zipfs_getattr(const char *path, struct stat *stbuf, struct fuse_file_info *fi) {
     zipfs_data_t* data = zipfs_get_data();
-    
-    zip_stat_t result;
     const char* real_path = zip_path_format(path);
 
     if (strcmp(real_path, ZIP_ROOT) == 0 || zip_is_dir(real_path, data->zip_file)) {
         stbuf->st_mode = S_IFDIR | DEFAULT_DIR_PERM;
         stbuf->st_nlink = 2;
     } else {
+        zip_stat_t result;
+        zip_stat_init(&result);
+        
         int ret = zip_stat(data->zip_file, real_path, 0, &result);
         if (ret != ZIP_ER_OK || result.name == NULL) return -ENOENT;
 
