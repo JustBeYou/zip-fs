@@ -16,6 +16,7 @@ static struct fuse_operations fuse_operations = {
     .releasedir = zipfs_releasedir,
     .create = zipfs_create,
     .unlink = zipfs_unlink,
+    .mkdir = zipfs_mkdir,
 };
 
 int main(int argc, char *argv[])

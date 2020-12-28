@@ -27,6 +27,8 @@ int zipfs_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 int zipfs_read(const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info *fi);
 
 int zipfs_create(const char *path, mode_t mode, struct fuse_file_info *fi);
-int zipfs_unlink(const char* path);
+int zipfs_unlink(const char *path);
+
+int zipfs_mkdir(const char *path , mode_t mode);
 
 #endif
