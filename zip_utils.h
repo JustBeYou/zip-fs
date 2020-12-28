@@ -12,6 +12,6 @@
 char* zip_dir_path_format(const char* path);
 void zip_dir_path_cleanup(char* path);
 int zip_is_dir(const char* dir_name, zip_t* zip);
-void zip_flush(zip_t** zip_ptr);
+void zipfs_manager_flush(zip_t** zip_ptr);
 
 #endif
