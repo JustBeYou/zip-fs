@@ -6,7 +6,8 @@
 
 char* zip_dir_path_format(const char* path) {
     size_t len = strlen(path);
-    char* proper_dir_name = malloc(sizeof(char) * (len + 1));
+    // +1 for '/' and +1 for '\0'
+    char* proper_dir_name = malloc(sizeof(char) * (len + 2));
 
     strcpy(proper_dir_name, path);
     
