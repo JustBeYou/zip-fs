@@ -92,8 +92,8 @@ void zipfs_manager_flush(zip_t** zip_ptr) {
             temp_for_writing[i] = for_writing[i];
 
             // ftell only applied for files opened for reading
-            if (for_writing[i]) offsets[i] = zip_ftell(opened_files[i]);
-            else                offsets[i] = 0;
+            if (for_writing[i]) offsets[i] = 0;
+            else                offsets[i] = zip_ftell(opened_files[i]);
             // TODO: save data in writing buffers
 
             debug(assert(offsets[i] >= 0));
