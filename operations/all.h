@@ -21,6 +21,7 @@ int zipfs_releasedir(const char *path, struct fuse_file_info *fi);
 int zipfs_open(const char *path, struct fuse_file_info *fi);
 int zipfs_release(const char *path, struct fuse_file_info *fi);
 
+int zipfs_access(const char *path, int mode);
 int zipfs_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
                   off_t offset, struct fuse_file_info *fi,
                   enum fuse_readdir_flags flags);
@@ -32,5 +33,7 @@ int zipfs_unlink(const char *path);
 
 int zipfs_mkdir(const char *path , mode_t mode);
 int zipfs_rmdir(const char *path);
+
+int zipfs_utimens(const char *path, const struct timespec tv[2], struct fuse_file_info *fi);
 
 #endif

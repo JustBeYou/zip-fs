@@ -19,6 +19,8 @@ static struct fuse_operations fuse_operations = {
     .mkdir = zipfs_mkdir,
     .rmdir = zipfs_rmdir,
     .write = zipfs_write,
+    .access = zipfs_access,
+    .utimens = zipfs_utimens,
 };
 
 int main(int argc, char *argv[])
